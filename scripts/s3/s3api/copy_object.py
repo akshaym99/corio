@@ -62,10 +62,10 @@ class TestS3CopyObjects(S3Api):
     @classmethod
     def initialize_variables(cls, test_id):
         """Initialize variables for copy object operations."""
-        cls.bucket_name1 = f"copy-obj-bucket1-{test_id}-{perf_counter_ns()}"
-        cls.bucket_name2 = f"copy-obj-bucket2-{test_id}-{perf_counter_ns()}"
-        cls.object_name1 = f"copy-object1-{test_id}-{perf_counter_ns()}"
-        cls.object_name2 = f"copy-object2-{test_id}-{perf_counter_ns()}"
+        cls.bucket_name1 = f"copy-obj-bucket1-{test_id}-{cls.session_id}-{perf_counter_ns()}"
+        cls.bucket_name2 = f"copy-obj-bucket2-{test_id}-{cls.session_id}-{perf_counter_ns()}"
+        cls.object_name1 = f"copy-object1-{test_id}-{cls.session_id}-{perf_counter_ns()}"
+        cls.object_name2 = f"copy-object2-{test_id}-{cls.session_id}-{perf_counter_ns()}"
 
     # pylint: disable=broad-except
     async def execute_copy_object_workload(self):
