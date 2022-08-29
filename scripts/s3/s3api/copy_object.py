@@ -51,7 +51,7 @@ class TestS3CopyObjects(S3Api):
         random.seed(kwargs.get("seed"))
         self.object_size = kwargs.get("object_size")
         self.iteration = 1
-        self.session_id = kwargs.get("session")
+        self.session_id = kwargs.get("session", "")
         self.test_id = test_id.lower()
         self.range_read = kwargs.get("range_read")
         if kwargs.get("duration"):
@@ -62,7 +62,7 @@ class TestS3CopyObjects(S3Api):
     @classmethod
     def initialize_variables(cls, test_id, sid):
         """Initialize variables for copy object operations."""
-        cls.bucket_name1 = f"copy-obj-bucket1-{test_id}-{sid}-{perf_counter_ns()}"
+        cls.bucket_name1 = f'copy-obj-bucket1-{test_id}-{perf_counter_ns()}'.lower()
         cls.bucket_name2 = f"copy-obj-bucket2-{test_id}-{sid}-{perf_counter_ns()}"
         cls.object_name1 = f"copy-object1-{test_id}-{sid}-{perf_counter_ns()}"
         cls.object_name2 = f"copy-object2-{test_id}-{sid}-{perf_counter_ns()}"
@@ -71,8 +71,10 @@ class TestS3CopyObjects(S3Api):
     async def execute_copy_object_workload(self):
         """Execute copy object workload for specific duration."""
         self.initialize_variables(self.test_id, self.session_id)
+        print("Creating bucket1 %s", self.bucket_name1)
         await self.create_bucket(self.bucket_name1)
         self.log.info("Created bucket %s", self.bucket_name1)
+        self.log.info("Creating bucket2 %s", self.bucket_name2)
         await self.create_bucket(self.bucket_name2)
         self.log.info("Created bucket %s", self.bucket_name2)
         while True:
