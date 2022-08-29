@@ -59,22 +59,26 @@ class TestS3CopyObjects(S3Api):
             self.finish_time = datetime.now() + kwargs.get("duration")
         else:
             self.finish_time = datetime.now() + timedelta(hours=int(100 * 24))
+        sid = self.session_id.split("_",1)[1]
+        self.bucket_name1 = f'copy-obj-bkt1-{self.test_id}-{sid}-{perf_counter_ns()}'.lower()
+        self.bucket_name2 = f'copy-obj-bkt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+        self.object_name1 = f'copy-obt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+        self.object_name2 = f'copy-obt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
 
-    @classmethod
-    def initialize_variables(cls, test_id, sid):
-        """Initialize variables for copy object operations."""
-        cls.bucket_name1 = f'copy-obj-bkt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
-        cls.bucket_name2 = f'copy-obj-bkt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
-        cls.object_name1 = f'copy-obt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
-        cls.object_name2 = f'copy-obt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+    # @classmethod
+    # def initialize_variables(cls, test_id, sid):
+    #     """Initialize variables for copy object operations."""
+    #     cls.bucket_name1 = f'copy-obj-bkt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+    #     cls.bucket_name2 = f'copy-obj-bkt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+    #     cls.object_name1 = f'copy-obt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+    #     cls.object_name2 = f'copy-obt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
 
     # pylint: disable=broad-except
     async def execute_copy_object_workload(self):
         """Execute copy object workload for specific duration."""
-        self.initialize_variables(self.test_id, self.session_id.split("_",1)[1])
+        # self.initialize_variables(self.test_id, self.session_id.split("_",1)[1])
         await self.create_bucket(self.bucket_name1)
         self.log.info("Created bucket %s", self.bucket_name1)
-        time.sleep(5)
         await self.create_bucket(self.bucket_name2)
         self.log.info("Created bucket %s", self.bucket_name2)
         while True:
