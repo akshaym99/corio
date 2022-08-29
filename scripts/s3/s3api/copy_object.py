@@ -20,6 +20,7 @@
 
 import os
 import random
+import time
 from datetime import datetime
 from datetime import timedelta
 from time import perf_counter_ns
@@ -62,8 +63,8 @@ class TestS3CopyObjects(S3Api):
     @classmethod
     def initialize_variables(cls, test_id, sid):
         """Initialize variables for copy object operations."""
-        # cls.bucket_name1 = f'copy-obj-bkt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
-        # cls.bucket_name2 = f'copy-obj-bkt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+        cls.bucket_name1 = f'copy-obj-bkt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
+        cls.bucket_name2 = f'copy-obj-bkt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
         cls.object_name1 = f'copy-obt1-{test_id}-{sid}-{perf_counter_ns()}'.lower()
         cls.object_name2 = f'copy-obt2-{test_id}-{sid}-{perf_counter_ns()}'.lower()
 
@@ -71,13 +72,11 @@ class TestS3CopyObjects(S3Api):
     async def execute_copy_object_workload(self):
         """Execute copy object workload for specific duration."""
         self.initialize_variables(self.test_id, self.session_id.split("_",1)[1])
-        sid = self.session_id.split("_",1)[1]
-        bucket_name1 = f'copy-obj-bkt1-{self.test_id}-{sid}-{perf_counter_ns()}'.lower()
-        await self.create_bucket(bucket_name1)
-        self.log.info("Created bucket %s", bucket_name1)
-        bucket_name2 = f'copy-obj-bkt2-{self.test_id}-{sid}-{perf_counter_ns()}'.lower()
-        await self.create_bucket(bucket_name2)
-        self.log.info("Created bucket %s", bucket_name2)
+        await self.create_bucket(self.bucket_name1)
+        self.log.info("Created bucket %s", self.bucket_name1)
+        time.sleep(5)
+        await self.create_bucket(self.bucket_name2)
+        self.log.info("Created bucket %s", self.bucket_name2)
         while True:
             try:
                 self.log.info("Iteration %s is started for %s...", self.iteration, self.session_id)
