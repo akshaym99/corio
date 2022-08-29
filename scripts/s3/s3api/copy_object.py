@@ -71,7 +71,7 @@ class TestS3CopyObjects(S3Api):
     async def execute_copy_object_workload(self):
         """Execute copy object workload for specific duration."""
         self.initialize_variables(self.test_id, self.session_id)
-        print("Creating bucket1 %s", self.bucket_name1)
+        self.log.info("Creating bucket1 %s", self.bucket_name1)
         await self.create_bucket(self.bucket_name1)
         self.log.info("Created bucket %s", self.bucket_name1)
         self.log.info("Creating bucket2 %s", self.bucket_name2)
