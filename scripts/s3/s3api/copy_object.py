@@ -60,17 +60,17 @@ class TestS3CopyObjects(S3Api):
             self.finish_time = datetime.now() + timedelta(hours=int(100 * 24))
 
     @classmethod
-    def initialize_variables(cls, test_id):
+    def initialize_variables(cls, test_id, sid):
         """Initialize variables for copy object operations."""
-        cls.bucket_name1 = f"copy-obj-bucket1-{test_id}-{cls.session_id}-{perf_counter_ns()}"
-        cls.bucket_name2 = f"copy-obj-bucket2-{test_id}-{cls.session_id}-{perf_counter_ns()}"
-        cls.object_name1 = f"copy-object1-{test_id}-{cls.session_id}-{perf_counter_ns()}"
-        cls.object_name2 = f"copy-object2-{test_id}-{cls.session_id}-{perf_counter_ns()}"
+        cls.bucket_name1 = f"copy-obj-bucket1-{test_id}-{sid}-{perf_counter_ns()}"
+        cls.bucket_name2 = f"copy-obj-bucket2-{test_id}-{sid}-{perf_counter_ns()}"
+        cls.object_name1 = f"copy-object1-{test_id}-{sid}-{perf_counter_ns()}"
+        cls.object_name2 = f"copy-object2-{test_id}-{sid}-{perf_counter_ns()}"
 
     # pylint: disable=broad-except
     async def execute_copy_object_workload(self):
         """Execute copy object workload for specific duration."""
-        self.initialize_variables(self.test_id)
+        self.initialize_variables(self.test_id, self.session_id)
         await self.create_bucket(self.bucket_name1)
         self.log.info("Created bucket %s", self.bucket_name1)
         await self.create_bucket(self.bucket_name2)
